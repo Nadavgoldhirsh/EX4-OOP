@@ -17,9 +17,9 @@ import java.util.List;
 public class Terrain {
     private static final int BLOCK_SIZE_MULT = 7;
     private static final String GROUND = "ground";
-    private final int groundHeightAtX0;
+    private static int groundHeightAtX0 = 0;
     private final static float INIT_HEIGHT_MULT = (float) 2/3;
-    private final int seed;
+    private static  int seed = 0;
     private static final Color BASE_GROUND_COLOR =new Color(212, 123,74);
     private static final int TERRAIN_DEPTH = 20;
 
@@ -30,8 +30,8 @@ public class Terrain {
      * @param seed a randomly selected integer
      */
     public Terrain(Vector2 windowDimensions, int seed){
-        this.groundHeightAtX0 = GroundValue.GetInitialGroundValue(windowDimensions);
-        this.seed = seed;
+        groundHeightAtX0 = GroundValue.GetInitialGroundValue(windowDimensions);
+        Terrain.seed = seed;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Terrain {
      * @param x a given x coordinate
      * @return the height of the ground at x coordinate
      */
-    public float groundHeightAt(float x){
+    public static float groundHeightAt(float x){
         NoiseGenerator noiseGenerator = new NoiseGenerator(seed, groundHeightAtX0);
         float noise = (float) noiseGenerator.noise(x, Block.SIZE * BLOCK_SIZE_MULT);
         return groundHeightAtX0 + noise;

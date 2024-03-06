@@ -1,8 +1,16 @@
-import danogl.*;
+import danogl.GameManager;
+import danogl.GameObject;
 import danogl.collisions.Layer;
-import danogl.components.*;
-import danogl.gui.*;
-import danogl.gui.rendering.*;
+import danogl.components.CoordinateSpace;
+import danogl.components.GameObjectPhysics;
+import danogl.gui.ImageReader;
+import danogl.gui.SoundReader;
+import danogl.gui.UserInputListener;
+import danogl.gui.WindowController;
+import danogl.gui.rendering.Camera;
+import danogl.gui.rendering.OvalRenderable;
+import danogl.gui.rendering.RectangleRenderable;
+import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 import java.awt.*;
@@ -68,6 +76,7 @@ class Avatar extends GameObject {
         transform().setAccelerationY(GRAVITY);
         this.inputListener = inputListener;
     }
+
 
     @Override
     public void update(float deltaTime) {
