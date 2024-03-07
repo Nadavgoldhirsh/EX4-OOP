@@ -2,21 +2,21 @@ package pepse;
 
 import danogl.GameManager;
 import danogl.GameObject;
+import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.gui.*;
-import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
 import daynight.Night;
 import daynight.Sun;
 import daynight.SunHalo;
 import world.*;
+import world.trees.StaticTree;
+import java.util.function.*;
 
 
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class PepseGameManager extends GameManager {
 
@@ -27,9 +27,15 @@ public class PepseGameManager extends GameManager {
     private static final float START_ENERGY = 100;
     private static final int COUNTERLENGTH = 50;
     private static final int FACTOR = -3;
+    private static final int ROOT = 5;
     private static final Vector2 ADJ = Vector2.of(5,80);
     private static Avatar avatar;
     private static Energy energy;
+    private static StaticTree staticTree;
+    private static final int TREEWIDTH = 70;
+    private static final int TREEMAXHEIGHT= 300;
+    private static final int TREEMINHEIGHT= 200;
+    private static int treeHeight;
 
 
     public static void main(String[] args) {
@@ -60,7 +66,14 @@ public class PepseGameManager extends GameManager {
                 new Vector2(COUNTERLENGTH, COUNTERLENGTH),
                 new TextRenderable("" + START_ENERGY), avatar::getEnergy);
         gameObjects().addGameObject(energy);
+        createFlora(gameObjects(),windowController,Terrain::groundHeightAt);
 
+
+    }
+    private void createFlora(GameObjectCollection gameObjects, WindowController windowController,
+                             Function<Float, Float> func) {
+        Flora flora = new Flora(gameObjects,func);
+        flora.createInRange(TREEWIDTH, (int) windowController.getWindowDimensions().x() - TREEWIDTH);
     }
 
     private void createSky(WindowController windowController) {

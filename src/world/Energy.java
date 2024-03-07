@@ -27,7 +27,7 @@ public class Energy extends GameObject {
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      */
-    public Energy(Vector2 topLeftCorner, Vector2 dimensions, TextRenderable renderable,Supplier<Float> func) {
+    public Energy(Vector2 topLeftCorner, Vector2 dimensions, TextRenderable renderable, Supplier<Float> func) {
         super(topLeftCorner, dimensions, renderable);
         energyText = renderable;
         vu = func;

@@ -103,7 +103,7 @@ public class Avatar extends GameObject {
                 energy += REST_ENERGY;
             }
         }
-        else if((getVelocity().x() != 0 || getVelocity().y() != 0 ) && energy >= MOVE_ENERGY){
+        else if((getVelocity().x() != 0) && energy >= MOVE_ENERGY){
             energy -= MOVE_ENERGY;
         }
     }
