@@ -22,14 +22,18 @@ public class Flora {
     private static float treePos;
 
     private static final int ROOT = 4;
+    private static final int AVATARSPACE = 66;
     private static StaticTree staticTree;
     private static Function<Float, Float> gh;
     private GameObjectCollection gameObjects;
+    private static float dim;
 
 
-    public Flora(GameObjectCollection gameObjects, Function<Float, Float> func){
+
+    public Flora(GameObjectCollection gameObjects, Function<Float, Float> func, float dim){
         gh = func;
         this.gameObjects = gameObjects;
+        this.dim = dim;
 
 
     }
@@ -46,11 +50,19 @@ public class Flora {
             }
             Arrays.sort(arr);
             flag = true;
+            if ((arr[0] > (dim/2 - AVATARSPACE)) && (arr[0] < (dim/2 + AVATARSPACE))) {
+                flag = false;
+            }
             for (int i = 0; i< arr.length - 1; i++){
                 if (arr[i + 1] - arr[i] <= TREEWIDTH) {
                     flag = false;
                     break;
                 }
+                if ((arr[i+1] > (dim/2 - AVATARSPACE)) && (arr[i+1] < (dim/2 + AVATARSPACE))) {
+                    flag = false;
+                    break;
+                }
+
             }
         }
         for (int i = 0; i < TREEAMOUNT; i++) {

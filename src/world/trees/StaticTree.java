@@ -17,12 +17,18 @@ import java.awt.*;
 public class StaticTree extends GameObject {
     private GameObjectCollection gameObjects;
     private static StaticLeaf staticLeaf;
+    private static Fruit fruit;
     private static final int LEAF = 20;
+    private static final int FRUIT = 13;
+
     private static final int BETWEENLEAF = 3;
     private static final int MINLEAF = 10;
 
     private static int leafamount= 11;
     private static final double COIN = 0.09;
+    private static final double COINF = 0.9;
+    private static final int LEAFLAYER = -50;
+
     Random rnd = new Random();
 
 
@@ -40,7 +46,14 @@ public class StaticTree extends GameObject {
                     staticLeaf = new StaticLeaf(Vector2.of(pos.x()-(LEAF+BETWEENLEAF)*(leafamount-1)/2
                             +(LEAF+BETWEENLEAF)*j+LEAF, pos.y()-(LEAF+BETWEENLEAF)*(leafamount-1)/2
                             +(LEAF+BETWEENLEAF)*i+LEAF),Vector2.of(LEAF,LEAF));
-                    gameObjects.addGameObject(staticLeaf, Layer.FOREGROUND);
+                    gameObjects.addGameObject(staticLeaf, LEAFLAYER);
+                }
+                if(rnd.nextDouble(1)>COINF){
+                    fruit = new Fruit(Vector2.of(pos.x()-(LEAF+BETWEENLEAF)*(leafamount-1)/2
+                            +(LEAF+BETWEENLEAF)*j+LEAF, pos.y()-(LEAF+BETWEENLEAF)*(leafamount-1)/2
+                            +(LEAF+BETWEENLEAF)*i+LEAF + rnd.nextInt(FRUIT)),Vector2.of(FRUIT,FRUIT), gameObjects);
+                    fruit.setTag("FRUIT");
+                    gameObjects.addGameObject(fruit, Layer.DEFAULT);
                 }
             }
 

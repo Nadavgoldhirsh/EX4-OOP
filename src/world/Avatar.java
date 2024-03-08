@@ -1,15 +1,27 @@
 package world;
 
 import danogl.GameObject;
+import danogl.collisions.Collision;
+import danogl.collisions.GameObjectCollection;
+import danogl.components.ScheduledTask;
 import danogl.gui.ImageReader;
 import danogl.gui.UserInputListener;
 import danogl.gui.rendering.*;
 import danogl.util.Vector2;
+import world.trees.Fruit;
+import java.math.*;
+import java.util.*;
+
 import java.awt.event.KeyEvent;
-import java.util.Timer;
 
 public class Avatar extends GameObject {
     private static final float VELOCITY_X = 400;
+    private static final int WAIT = 30;
+
+    private Deque<GameObject> other = new ArrayDeque<>();
+    private static final float BONUS = 10;
+
+
     private static final float VELOCITY_Y = -650;
     private static final float GRAVITY = 600;
     private static float energy = 100;
@@ -31,14 +43,17 @@ public class Avatar extends GameObject {
     private AnimationRenderable idleAnimation;
     private AnimationRenderable runAnimation;
     private AnimationRenderable jumpAnimation;
+    private GameObjectCollection gameObjectCollection;
 
 
-    public Avatar(Vector2 pos, UserInputListener inputListener, ImageReader imageReader){
+    public Avatar(Vector2 pos, UserInputListener inputListener, ImageReader imageReader,
+                  GameObjectCollection gameObjectCollection){
         super(pos, Vector2.of(AVATAR_X_DIM,AVATAR_Y_DIM ), new ImageRenderable(imageReader.readImage
                 ("assets/assets/idle_0.png",true).getImage()));
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         transform().setAccelerationY(GRAVITY);
         this.inputListener = inputListener;
+        this.gameObjectCollection = gameObjectCollection;
         idleArr = new ImageRenderable[LEN];
         for (int i = 0; i < idleArr.length; i++){
             idleArr[i] = new ImageRenderable(imageReader.readImage
@@ -63,7 +78,7 @@ public class Avatar extends GameObject {
     public float getEnergy () {
         return energy;
     }
-    public boolean getJumpValue() {
+    public static boolean getJumpValue() {
         if (jumpValue){
             jumpValue = false;
             return true;
@@ -106,6 +121,38 @@ public class Avatar extends GameObject {
         else if((getVelocity().x() != 0) && energy >= MOVE_ENERGY){
             energy -= MOVE_ENERGY;
         }
+
+    }
+    /***
+     * This method runs the collision strategy and updates the bricksAmount counter to have 1 less brick
+     * @param other The GameObject with which a collision occurred.
+     * @param collision Information regarding this collision.
+     *                  A reasonable elastic behavior can be achieved with:
+     *                  setVelocity(getVelocity().flipped(collision.getNormal()));
+     */
+    @Override
+    public void onCollisionEnter(GameObject other, Collision collision) {
+        if (other.getTag()=="FRUIT"){
+            this.other.addFirst(other);
+            gameObjectCollection.removeGameObject(other);
+            if(energy <= START_ENERGY){
+                energy=Math.min(energy+=BONUS,START_ENERGY);
+            }
+            new ScheduledTask(
+                    this,WAIT
+                    ,
+                    false,
+                    this::t1);
+
+
+        }
+
+
+    }
+    private void t1() {
+
+       gameObjectCollection.addGameObject(other.removeLast());
+
     }
 
 }

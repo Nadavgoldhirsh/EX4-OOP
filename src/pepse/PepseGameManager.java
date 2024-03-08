@@ -59,7 +59,7 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sunHalo,Layer.BACKGROUND);
         avatar = new Avatar(Vector2.of(windowController.getWindowDimensions().x()/2-AVATAR_X_DIM,
                 Terrain.groundHeightAt(windowController.getWindowDimensions().x()/2-AVATAR_X_DIM)-AVATAR_Y_DIM),
-                inputListener, imageReader);
+                inputListener, imageReader, gameObjects());
         gameObjects().addGameObject(avatar);
         energy = new Energy(windowController.getWindowDimensions().add(
                 new Vector2(COUNTERLENGTH, COUNTERLENGTH).mult(FACTOR).add(ADJ)),
@@ -72,7 +72,7 @@ public class PepseGameManager extends GameManager {
     }
     private void createFlora(GameObjectCollection gameObjects, WindowController windowController,
                              Function<Float, Float> func) {
-        Flora flora = new Flora(gameObjects,func);
+        Flora flora = new Flora(gameObjects,func,windowController.getWindowDimensions().x());
         flora.createInRange(TREEWIDTH, (int) windowController.getWindowDimensions().x() - TREEWIDTH);
     }
 
