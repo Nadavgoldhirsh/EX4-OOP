@@ -1,8 +1,10 @@
 package world;
 
+import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.util.Vector2;
+import world.trees.Fruit;
 import world.trees.StaticTree;
 
 import java.util.LinkedList;
@@ -17,25 +19,23 @@ public class Flora {
     private static final int TREEMAXHEIGHT= 400;
     private static final int TREEMINHEIGHT= 200;
     private static final int TREEAMOUNT= 4;
-
-    private static int treeHeight;
-    private static float treePos;
+    private static final int DIM_DVIDER = 2;
 
     private static final int ROOT = 4;
     private static final int AVATARSPACE = 66;
+    private static final int LEAF_LAYER = -50;
     private static StaticTree staticTree;
+    private final List<Observer> myObsList;
     private static Function<Float, Float> gh;
-    private GameObjectCollection gameObjects;
-    private static float dim;
+    private final GameObjectCollection gameObjects;
+    private final float dim;
 
 
-
-    public Flora(GameObjectCollection gameObjects, Function<Float, Float> func, float dim){
+    public Flora(GameObjectCollection gameObjects, List<Observer> myObsList, Function<Float, Float> func, float dim){
+        this.myObsList = myObsList;
         gh = func;
         this.gameObjects = gameObjects;
         this.dim = dim;
-
-
     }
 
     public List<StaticTree> createInRange(int minX, int maxX) {
@@ -50,7 +50,8 @@ public class Flora {
             }
             Arrays.sort(arr);
             flag = true;
-            if ((arr[0] > (dim/2 - AVATARSPACE)) && (arr[0] < (dim/2 + AVATARSPACE))) {
+            if ((arr[0] > (dim/DIM_DVIDER - AVATARSPACE)) &&
+                    (arr[0] < (dim/DIM_DVIDER + AVATARSPACE))) {
                 flag = false;
             }
             for (int i = 0; i< arr.length - 1; i++){
@@ -58,23 +59,40 @@ public class Flora {
                     flag = false;
                     break;
                 }
-                if ((arr[i+1] > (dim/2 - AVATARSPACE)) && (arr[i+1] < (dim/2 + AVATARSPACE))) {
+                if ((arr[i+1] > (dim/ DIM_DVIDER - AVATARSPACE)) &&
+                        (arr[i+1] < (dim/DIM_DVIDER + AVATARSPACE))) {
                     flag = false;
                     break;
                 }
-
             }
         }
+        addToRetList(rnd, arr, retList);
+        return retList;
+    }
+
+    private void addToRetList(Random rnd, int[] arr, List<StaticTree> retList) {
         for (int i = 0; i < TREEAMOUNT; i++) {
-            treeHeight = rnd.nextInt(TREEMAXHEIGHT - TREEMINHEIGHT) + TREEMINHEIGHT;
-            treePos = arr[i];
-            staticTree = new StaticTree(gameObjects,Vector2.of(treePos,
+            int treeHeight = rnd.nextInt(TREEMAXHEIGHT - TREEMINHEIGHT) + TREEMINHEIGHT;
+            float treePos = arr[i];
+            staticTree = new StaticTree(Vector2.of(treePos,
                     gh.apply(treePos) - treeHeight),
-                    Vector2.of(TREEWIDTH,treeHeight));
+                    Vector2.of(TREEWIDTH, treeHeight));
             retList.add(staticTree);
             gameObjects.addGameObject(staticTree, Layer.STATIC_OBJECTS);
+            addTreeFruitsAndLeafsToGameCollection();
+            myObsList.addAll(staticTree.getTreeObservers());
         }
-        return retList;
+    }
+
+    private void addTreeFruitsAndLeafsToGameCollection() {
+        for(GameObject obj : staticTree.getTreeLeafsAndFruitsList()){
+            if(obj.getTag().equals(Fruit.FRUIT_TAG)){
+                gameObjects.addGameObject(obj,Layer.DEFAULT);
+            }
+            else { // it's a leaf
+                gameObjects.addGameObject(obj, LEAF_LAYER);
+            }
+        }
     }
 
 }

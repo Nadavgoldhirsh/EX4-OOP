@@ -53,8 +53,7 @@ public class Terrain {
      * @return a list of Blocks that creates the ground
      */
     public List<Block> createInRange(int minX, int maxX){
-         RectangleRenderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(
-                BASE_GROUND_COLOR));
+
          List<Block> retBlockList = new LinkedList<Block>();
          Block curBlock ;
          int blockAmountInRow = (int) Math.ceil((double) (maxX - minX) / Block.SIZE);
@@ -63,6 +62,8 @@ public class Terrain {
              int curYCoor;
              float curGroundHeight = groundHeightAt(curXCoor);
              for (int j = 0; j < TERRAIN_DEPTH; j++) {
+                 RectangleRenderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(
+                         BASE_GROUND_COLOR));
                  curYCoor = (int) Math.floor(curGroundHeight / Block.SIZE) * Block.SIZE;
                  curYCoor = curYCoor+ j*Block.SIZE;
                  curBlock = new Block(new Vector2( curXCoor, curYCoor), renderable);

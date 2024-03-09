@@ -132,7 +132,7 @@ public class Avatar extends GameObject {
      */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
-        if (other.getTag()=="FRUIT"){
+        if (other.getTag()== Fruit.FRUIT_TAG){
             this.other.addFirst(other);
             gameObjectCollection.removeGameObject(other);
             if(energy <= START_ENERGY){
@@ -143,8 +143,6 @@ public class Avatar extends GameObject {
                     ,
                     false,
                     this::t1);
-
-
         }
 
 

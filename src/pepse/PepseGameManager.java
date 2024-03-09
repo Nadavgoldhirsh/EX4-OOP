@@ -12,6 +12,8 @@ import daynight.Sun;
 import daynight.SunHalo;
 import world.*;
 import world.trees.StaticTree;
+
+import java.util.ArrayList;
 import java.util.function.*;
 
 
@@ -29,6 +31,8 @@ public class PepseGameManager extends GameManager {
     private static final int FACTOR = -3;
     private static final int ROOT = 5;
     private static final Vector2 ADJ = Vector2.of(5,80);
+    private static final int TARGET_FRAMERATE = 60;
+    private static final int DIVID_BY = 2;
     private static Avatar avatar;
     private static Energy energy;
     private static StaticTree staticTree;
@@ -36,43 +40,95 @@ public class PepseGameManager extends GameManager {
     private static final int TREEMAXHEIGHT= 300;
     private static final int TREEMINHEIGHT= 200;
     private static int treeHeight;
+    private final List<Observer> myObsList = new ArrayList<>();
 
-
+    /**
+     * This is the Main method of the program
+     * @param args an input String list
+     */
     public static void main(String[] args) {
         new PepseGameManager().run();
-
     }
 
+    /**
+     * This method creates all the game
+     * @param imageReader Contains a single method: readImage, which reads an image from disk.
+     *                 See its documentation for help.
+     * @param soundReader Contains a single method: readSound, which reads a wav file from
+     *                    disk. See its documentation for help.
+     * @param inputListener Contains a single method: isKeyPressed, which returns whether
+     *                      a given key is currently pressed by the user or not. See its
+     *                      documentation.
+     * @param windowController Contains an array of helpful, self explanatory methods
+     *                         concerning the window.
+     */
     @Override
     public void initializeGame(ImageReader imageReader, SoundReader soundReader,
                                UserInputListener inputListener, WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
         Random random = new Random(SEED);
+        windowController.setTargetFramerate(TARGET_FRAMERATE);
         createSky(windowController);
         createTerrain(windowController, random);
-        GameObject night =  Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
-        gameObjects().addGameObject(night,Layer.BACKGROUND);
+        createNight(windowController);
+        createSunAndHalo(windowController);
+        createAvatar(imageReader, inputListener, windowController);
+        createEnergy(windowController);
+        createFlora(gameObjects(),windowController,Terrain::groundHeightAt);
+    }
+
+    private void createSunAndHalo(WindowController windowController) {
         GameObject sun = Sun.create(windowController.getWindowDimensions(),CYCLE_LENGTH);
         gameObjects().addGameObject(sun,Layer.BACKGROUND);
         GameObject sunHalo = SunHalo.create(sun);
         sunHalo.addComponent((float deltaTime)-> sunHalo.setCenter(sun.getCenter()));
         gameObjects().addGameObject(sunHalo,Layer.BACKGROUND);
-        avatar = new Avatar(Vector2.of(windowController.getWindowDimensions().x()/2-AVATAR_X_DIM,
-                Terrain.groundHeightAt(windowController.getWindowDimensions().x()/2-AVATAR_X_DIM)-AVATAR_Y_DIM),
-                inputListener, imageReader, gameObjects());
-        gameObjects().addGameObject(avatar);
+    }
+
+    private void createNight(WindowController windowController) {
+        GameObject night =  Night.create(windowController.getWindowDimensions(), CYCLE_LENGTH);
+        gameObjects().addGameObject(night,Layer.BACKGROUND);
+    }
+
+    /**
+     * This method updates all the game objects and also notifies the leafs, trees and fruits to change
+     * when the player jumps
+     * @param deltaTime The time, in seconds, that passed since the last invocation
+     *                  of this method (i.e., since the last frame). This is useful
+     *                  for either accumulating the total time that passed since some
+     *                  event, or for physics integration (i.e., multiply this by
+     *                  the acceleration to get an estimate of the added velocity or
+     *                  by the velocity to get an estimate of the difference in position).
+     */
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (avatar.getJumpValue()){
+            for(Observer obs: myObsList){
+                obs.changeBecauseOfJump();
+            }
+        }
+
+    }
+
+    private void createEnergy(WindowController windowController) {
         energy = new Energy(windowController.getWindowDimensions().add(
                 new Vector2(COUNTERLENGTH, COUNTERLENGTH).mult(FACTOR).add(ADJ)),
                 new Vector2(COUNTERLENGTH, COUNTERLENGTH),
                 new TextRenderable("" + START_ENERGY), avatar::getEnergy);
         gameObjects().addGameObject(energy);
-        createFlora(gameObjects(),windowController,Terrain::groundHeightAt);
-
-
     }
+
+    private void createAvatar(ImageReader imageReader, UserInputListener inputListener, WindowController windowController) {
+        avatar = new Avatar(Vector2.of(windowController.getWindowDimensions().x()/DIVID_BY-AVATAR_X_DIM,
+                Terrain.groundHeightAt(windowController.getWindowDimensions().x()/ DIVID_BY -AVATAR_X_DIM)-AVATAR_Y_DIM),
+                inputListener, imageReader, gameObjects());
+        gameObjects().addGameObject(avatar);
+    }
+
     private void createFlora(GameObjectCollection gameObjects, WindowController windowController,
                              Function<Float, Float> func) {
-        Flora flora = new Flora(gameObjects,func,windowController.getWindowDimensions().x());
+        Flora flora = new Flora(gameObjects,myObsList,func,windowController.getWindowDimensions().x());
         flora.createInRange(TREEWIDTH, (int) windowController.getWindowDimensions().x() - TREEWIDTH);
     }
 

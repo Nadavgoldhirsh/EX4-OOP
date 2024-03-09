@@ -17,7 +17,9 @@ import java.awt.*;
 public class Sun {
 
     private static final String SUN = "Sun";
-    public static final float HALF = 0.5f;
+    private static final float HALF = 0.5f;
+    private static final float TRANS_INIT_VAL = 0f;
+    private static final float TRANS_FINAL_VAL = 360f;
 
     /**
      * Class Ctor
@@ -38,8 +40,8 @@ public class Sun {
                         (initialSunCenter.subtract(cycleCenter)
                                 .rotated(angle)
                                 .add(cycleCenter))
-                ,0f
-                ,360f
+                , TRANS_INIT_VAL
+                , TRANS_FINAL_VAL
                 ,Transition.LINEAR_INTERPOLATOR_FLOAT
                 ,cycleLength
                 , Transition.TransitionType.TRANSITION_LOOP

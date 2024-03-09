@@ -33,7 +33,7 @@ public class Energy extends GameObject {
         vu = func;
     }
 
-    public void setEnergy(Float energy) {
+    public void setEnergy(float energy) {
         this.energy = energy;
     }
 
