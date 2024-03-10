@@ -1,14 +1,11 @@
-package world.trees;
+package pepse.world.trees;
 
 import danogl.GameObject;
-import danogl.collisions.GameObjectCollection;
-import danogl.collisions.Layer;
 import danogl.components.GameObjectPhysics;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.PepseGameManager;
-import util.ColorSupplier;
-import world.Observer;
+import pepse.util.ColorSupplier;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,18 +1,16 @@
-package world;
+package pepse.world;
 
 import danogl.GameObject;
-import danogl.collisions.Layer;
-import danogl.components.CoordinateSpace;
-import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
 
-import java.awt.*;
 import java.util.function.*;
-import java.awt.event.KeyEvent;
 
+/**
+ * This class job is to hold the energy level of the avatar and presents it on the screen
+ */
 public class Energy extends GameObject {
+    private static final String EMPTY_STR_FOR_CONCATING = "";
     private static TextRenderable energyText;
     private static Supplier <Float> vu;
     private Float energy;
@@ -33,6 +31,11 @@ public class Energy extends GameObject {
         vu = func;
     }
 
+    /**
+     * this is
+     * @param energy
+     */
+
     public void setEnergy(float energy) {
         this.energy = energy;
     }
@@ -41,6 +44,6 @@ public class Energy extends GameObject {
     public void update(float deltaTime) {
         super.update(deltaTime);
         energy = vu.get();
-        energyText.setString(""+energy);
+        energyText.setString(EMPTY_STR_FOR_CONCATING + energy.intValue());
     }
 }

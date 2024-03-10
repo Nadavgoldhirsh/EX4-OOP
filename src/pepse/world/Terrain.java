@@ -1,13 +1,12 @@
-package world;
+package pepse.world;
 
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
-import util.ColorSupplier;
-import util.GroundValue;
-import util.NoiseGenerator;
+import pepse.util.ColorSupplier;
+import pepse.util.GroundValue;
+import pepse.util.NoiseGenerator;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public class Terrain {
     private static final int BLOCK_SIZE_MULT = 7;
     private static final String GROUND = "ground";
     private static int groundHeightAtX0 = 0;
-    private final static float INIT_HEIGHT_MULT = (float) 2/3;
     private static  int seed = 0;
     private static final Color BASE_GROUND_COLOR =new Color(212, 123,74);
     private static final int TERRAIN_DEPTH = 20;

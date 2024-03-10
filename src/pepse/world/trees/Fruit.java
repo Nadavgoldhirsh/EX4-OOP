@@ -1,9 +1,8 @@
-package world.trees;
+package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
-import world.Observer;
 
 import java.awt.*;
 

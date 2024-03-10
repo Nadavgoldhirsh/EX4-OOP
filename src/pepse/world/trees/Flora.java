@@ -1,17 +1,21 @@
-package world;
+package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.util.Vector2;
 import pepse.PepseGameManager;
-import world.trees.Fruit;
-import world.trees.StaticTree;
+import pepse.world.trees.Fruit;
+import pepse.world.trees.Observer;
+import pepse.world.trees.StaticTree;
 
 import java.util.*;
 import java.util.function.Function;
 
 
+/**
+ * This class creates the vegetation of the simulation
+ */
 public class Flora {
     private static final int TREEWIDTH = 20;
     private static final int TREEMAXHEIGHT= 400;
@@ -24,12 +28,19 @@ public class Flora {
     private static final int LEAF_LAYER = -50;
     private static final int RAND_VALUES = 60;
     private static StaticTree staticTree;
-    private final List<Observer> myObsList;
+    private final List<pepse.world.trees.Observer> myObsList;
     private static Function<Float, Float> gh;
     private final GameObjectCollection gameObjects;
     private final float dim;
 
 
+    /**
+     * Class Ctor
+     * @param gameObjects the collection of game objects in the game
+     * @param myObsList the game manager observers list
+     * @param func the function that returns the height of the ground in a certain x point
+     * @param dim the dim
+     */
     public Flora(GameObjectCollection gameObjects, List<Observer> myObsList, Function<Float, Float> func, float dim){
         this.myObsList = myObsList;
         gh = func;
@@ -37,6 +48,12 @@ public class Flora {
         this.dim = dim;
     }
 
+    /**
+     * This function creates vegetation in the given range
+     * @param minX the start point
+     * @param maxX the end point
+     * @return a list of trees
+     */
     public List<StaticTree> createInRange(int minX, int maxX) {
         List<StaticTree> retList = new LinkedList<StaticTree>();
         Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));

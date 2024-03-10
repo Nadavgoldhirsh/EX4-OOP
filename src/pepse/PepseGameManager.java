@@ -7,11 +7,13 @@ import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
-import daynight.Night;
-import daynight.Sun;
-import daynight.SunHalo;
-import world.*;
-import world.trees.StaticTree;
+import pepse.world.daynight.Night;
+import pepse.world.daynight.Sun;
+import pepse.world.daynight.SunHalo;
+import pepse.world.*;
+import pepse.world.trees.Flora;
+import pepse.world.trees.Observer;
+import pepse.world.trees.StaticTree;
 
 import java.util.ArrayList;
 import java.util.function.*;
@@ -19,6 +21,10 @@ import java.util.function.*;
 
 import java.util.List;
 import java.util.Random;
+
+/**
+ * This class is the game manager
+ */
 
 public class PepseGameManager extends GameManager {
 
@@ -32,17 +38,12 @@ public class PepseGameManager extends GameManager {
     private static final float START_ENERGY = 100;
     private static final int COUNTERLENGTH = 50;
     private static final int FACTOR = -3;
-    private static final int ROOT = 5;
     private static final Vector2 ADJ = Vector2.of(5,80);
-    private static final int TARGET_FRAMERATE = 60;
+    private static final int TARGET_FRAMERATE = 50;
     private static final int DIVID_BY = 2;
     private static Avatar avatar;
     private static Energy energy;
-    private static StaticTree staticTree;
     private static final int TREEWIDTH = 70;
-    private static final int TREEMAXHEIGHT= 300;
-    private static final int TREEMINHEIGHT= 200;
-    private static int treeHeight;
     private final List<Observer> myObsList = new ArrayList<>();
 
     /**
@@ -50,6 +51,7 @@ public class PepseGameManager extends GameManager {
      * @param args an input String list
      */
     public static void main(String[] args) {
+
         new PepseGameManager().run();
     }
 
@@ -106,7 +108,7 @@ public class PepseGameManager extends GameManager {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (avatar.getJumpValue()){
+        if (Avatar.getJumpValue()){
             for(Observer obs: myObsList){
                 obs.changeBecauseOfJump();
             }

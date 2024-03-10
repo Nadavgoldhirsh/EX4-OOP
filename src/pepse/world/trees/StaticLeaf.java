@@ -1,4 +1,4 @@
-package world.trees;
+package pepse.world.trees;
 
 import java.util.Objects;
 import java.util.Random;
@@ -8,7 +8,6 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.PepseGameManager;
-import world.Observer;
 
 import java.awt.*;
 

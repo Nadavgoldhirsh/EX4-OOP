@@ -1,30 +1,32 @@
-package daynight;
+package pepse.world.daynight;
 
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
 import danogl.components.Transition;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
-import util.GroundValue;
-import world.Block;
-import world.Terrain;
+import pepse.util.GroundValue;
+import pepse.world.Block;
 
 import java.awt.*;
 
 /**
  * This class has a method that creates the Sun game object in the Simulation
  */
-public class Sun {
+public abstract class Sun {
 
     private static final String SUN = "Sun";
     private static final float HALF = 0.5f;
     private static final float TRANS_INIT_VAL = 0f;
     private static final float TRANS_FINAL_VAL = 360f;
 
+
     /**
-     * Class Ctor
+     * This method creates the sun
+     * @param windowDimensions the dims of the window
+     * @param cycleLength the cycle time of the sun
+     * @return the Sun obj
      */
-    public Sun() {}
     public static GameObject create(Vector2 windowDimensions, float cycleLength){
         Vector2 size = new Vector2(Block.SIZE,Block.SIZE);
         Vector2 topLeftCorner =  windowDimensions.mult(HALF).subtract(size.mult(HALF));

@@ -1,7 +1,8 @@
-package util;
+package pepse.util;
 
-import java.util.Random;
-
+/**
+ * This class is the noise generator
+ */
 public class NoiseGenerator {
     private double seed;
     private long default_size;
