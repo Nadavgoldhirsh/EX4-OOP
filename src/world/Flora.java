@@ -4,18 +4,16 @@ import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
 import danogl.collisions.Layer;
 import danogl.util.Vector2;
+import pepse.PepseGameManager;
 import world.trees.Fruit;
 import world.trees.StaticTree;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
-import java.util.Arrays;
 
 
 public class Flora {
-    private static final int TREEWIDTH = 70;
+    private static final int TREEWIDTH = 20;
     private static final int TREEMAXHEIGHT= 400;
     private static final int TREEMINHEIGHT= 200;
     private static final int TREEAMOUNT= 4;
@@ -24,6 +22,7 @@ public class Flora {
     private static final int ROOT = 4;
     private static final int AVATARSPACE = 66;
     private static final int LEAF_LAYER = -50;
+    private static final int RAND_VALUES = 60;
     private static StaticTree staticTree;
     private final List<Observer> myObsList;
     private static Function<Float, Float> gh;
@@ -40,7 +39,7 @@ public class Flora {
 
     public List<StaticTree> createInRange(int minX, int maxX) {
         List<StaticTree> retList = new LinkedList<StaticTree>();
-        Random rnd = new Random();
+        Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));
         boolean flag = false;
         int[] arr = new int[TREEAMOUNT];
         // maybe coin flip?
@@ -81,6 +80,7 @@ public class Flora {
             gameObjects.addGameObject(staticTree, Layer.STATIC_OBJECTS);
             addTreeFruitsAndLeafsToGameCollection();
             myObsList.addAll(staticTree.getTreeObservers());
+            myObsList.add(staticTree);
         }
     }
 

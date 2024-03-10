@@ -22,7 +22,10 @@ import java.util.Random;
 
 public class PepseGameManager extends GameManager {
 
-    private static final int SEED = 0;
+    /**
+     * Seed for the simulation
+     */
+    public static final int SEED = 7;
     private static final int CYCLE_LENGTH = 30;
     private static final int AVATAR_X_DIM = 50;
     private static final int AVATAR_Y_DIM = 80;
