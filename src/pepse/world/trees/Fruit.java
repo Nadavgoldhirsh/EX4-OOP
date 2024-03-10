@@ -6,6 +6,9 @@ import danogl.util.Vector2;
 
 import java.awt.*;
 
+/**
+ * This class represents a fruit in the game
+ */
 public class Fruit extends GameObject implements Observer {
     /**
      * This string represents the tag of the fruit
@@ -14,8 +17,11 @@ public class Fruit extends GameObject implements Observer {
     private boolean redColor;
 
 
-
-
+    /**
+     * Class Ctor
+     * @param pos
+     * @param dim
+     */
     public Fruit( Vector2 pos, Vector2 dim) {
         super(pos, dim, new OvalRenderable(Color.magenta));
         redColor = true;

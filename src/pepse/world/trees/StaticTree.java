@@ -13,6 +13,9 @@ import java.util.Objects;
 import java.util.Random;
 import java.awt.*;
 
+/**
+ * This class represents a Tree in the game
+ */
 public class StaticTree extends GameObject implements Observer {
     /**
      * This  string represents the fruit tag
@@ -34,10 +37,14 @@ public class StaticTree extends GameObject implements Observer {
     private final List<Observer> treeObservers= new LinkedList<>();
 
 
-    Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));
+    private Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));
 
 
-
+    /**
+     * Ctor of the class
+     * @param pos the position of the tree
+     * @param dim the dims
+     */
     public StaticTree( Vector2 pos, Vector2 dim){
         super(pos, dim, new RectangleRenderable(ColorSupplier.approximateColor(
                 BASE_TREE_COLOR)));

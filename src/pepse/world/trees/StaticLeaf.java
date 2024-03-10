@@ -11,6 +11,10 @@ import pepse.PepseGameManager;
 
 import java.awt.*;
 
+/**
+ * This class represents a Leaf on the Tree
+ */
+
 public class StaticLeaf extends GameObject implements Observer {
 
     private static final float MAX_DEGS = 90f;
@@ -19,27 +23,20 @@ public class StaticLeaf extends GameObject implements Observer {
     private static final int BOUND = 4;
     private static final Color DEF_COLOR = new Color(50, 200, 30);
     private static final int TIME_TO_ADD = 3;
-    public static final float START_ZERO_DEGS = 0f;
+    private static final float START_ZERO_DEGS = 0f;
     private static Random rnd = new Random(Objects.hash(60, PepseGameManager.SEED));
     private static final int LEAF = 20;
     private static final float SDEG = 5f;
     private static final float FDEG = 15f;
 
 
-    @Override
-    public void changeBecauseOfJump() {
-        new Transition<Float>(
-                this, // the game object being changed
-                renderer()::setRenderableAngle, // the method to call
-                START_ZERO_DEGS,
-                MAX_DEGS,
-                Transition.LINEAR_INTERPOLATOR_FLOAT,
-                TRANSITION_TIME_FOR_JUMP,
-                Transition.TransitionType.TRANSITION_ONCE,
-                null);
 
-    }
 
+    /**
+     * Class Ctor
+     * @param pos the leaf position
+     * @param dim the dims of the leaf
+     */
     public StaticLeaf(Vector2 pos, Vector2 dim){
         super(pos, dim, new RectangleRenderable(DEF_COLOR));
 
@@ -54,7 +51,22 @@ public class StaticLeaf extends GameObject implements Observer {
                 false,
                 this::t2);
     }
+    /**
+     * 90 degs rotate
+     */
+    @Override
+    public void changeBecauseOfJump() {
+        new Transition<Float>(
+                this, // the game object being changed
+                renderer()::setRenderableAngle, // the method to call
+                START_ZERO_DEGS,
+                MAX_DEGS,
+                Transition.LINEAR_INTERPOLATOR_FLOAT,
+                TRANSITION_TIME_FOR_JUMP,
+                Transition.TransitionType.TRANSITION_ONCE,
+                null);
 
+    }
     private void t1() {
          new Transition<Float>(
                 this, // the game object being changed
