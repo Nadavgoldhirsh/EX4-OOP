@@ -31,7 +31,6 @@ public class PepseGameManager extends GameManager {
     /**
      * Seed for the simulation
      */
-    public static final int SEED = 7;
     private static final int CYCLE_LENGTH = 30;
     private static final int AVATAR_X_DIM = 50;
     private static final int AVATAR_Y_DIM = 80;
@@ -39,7 +38,7 @@ public class PepseGameManager extends GameManager {
     private static final int COUNTERLENGTH = 50;
     private static final int FACTOR = -3;
     private static final Vector2 ADJ = Vector2.of(5,80);
-    private static final int TARGET_FRAMERATE = 50;
+    private static final int TARGET_FRAMERATE = 45;
     private static final int DIVID_BY = 2;
     private static Avatar avatar;
     private static Energy energy;
@@ -53,6 +52,7 @@ public class PepseGameManager extends GameManager {
     public static void main(String[] args) {
 
         new PepseGameManager().run();
+
     }
 
     /**
@@ -71,7 +71,7 @@ public class PepseGameManager extends GameManager {
     public void initializeGame(ImageReader imageReader, SoundReader soundReader,
                                UserInputListener inputListener, WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
-        Random random = new Random(SEED);
+        Random random = new Random();
         windowController.setTargetFramerate(TARGET_FRAMERATE);
         createSky(windowController);
         createTerrain(windowController, random);
@@ -124,9 +124,11 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(energy);
     }
 
-    private void createAvatar(ImageReader imageReader, UserInputListener inputListener, WindowController windowController) {
+    private void createAvatar(ImageReader imageReader,
+                              UserInputListener inputListener, WindowController windowController) {
         avatar = new Avatar(Vector2.of(windowController.getWindowDimensions().x()/DIVID_BY-AVATAR_X_DIM,
-                Terrain.groundHeightAt(windowController.getWindowDimensions().x()/ DIVID_BY -AVATAR_X_DIM)-AVATAR_Y_DIM),
+                Terrain.groundHeightAt(
+                        windowController.getWindowDimensions().x()/ DIVID_BY -AVATAR_X_DIM)-AVATAR_Y_DIM),
                 inputListener, imageReader, gameObjects());
         gameObjects().addGameObject(avatar);
     }

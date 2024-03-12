@@ -8,6 +8,7 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.PepseGameManager;
+import pepse.util.ColorSupplier;
 
 import java.awt.*;
 
@@ -24,7 +25,7 @@ public class StaticLeaf extends GameObject implements Observer {
     private static final Color DEF_COLOR = new Color(50, 200, 30);
     private static final int TIME_TO_ADD = 3;
     private static final float START_ZERO_DEGS = 0f;
-    private static Random rnd = new Random(Objects.hash(60, PepseGameManager.SEED));
+    private static final Random rnd = new Random();
     private static final int LEAF = 20;
     private static final float SDEG = 5f;
     private static final float FDEG = 15f;
@@ -38,7 +39,8 @@ public class StaticLeaf extends GameObject implements Observer {
      * @param dim the dims of the leaf
      */
     public StaticLeaf(Vector2 pos, Vector2 dim){
-        super(pos, dim, new RectangleRenderable(DEF_COLOR));
+        super(pos, dim, new RectangleRenderable(ColorSupplier.approximateColor(
+                DEF_COLOR)));
 
         new ScheduledTask(
                 this,

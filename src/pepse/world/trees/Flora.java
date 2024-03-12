@@ -23,7 +23,6 @@ public class Flora {
     private static final int TREEAMOUNT= 4;
     private static final int DIM_DVIDER = 2;
 
-    private static final int ROOT = 4;
     private static final int AVATARSPACE = 66;
     private static final int LEAF_LAYER = -50;
     private static final int RAND_VALUES = 60;
@@ -41,7 +40,8 @@ public class Flora {
      * @param func the function that returns the height of the ground in a certain x point
      * @param dim the dim
      */
-    public Flora(GameObjectCollection gameObjects, List<Observer> myObsList, Function<Float, Float> func, float dim){
+    public Flora(GameObjectCollection gameObjects,
+                 List<Observer> myObsList, Function<Float, Float> func, float dim){
         this.myObsList = myObsList;
         gh = func;
         this.gameObjects = gameObjects;
@@ -56,7 +56,7 @@ public class Flora {
      */
     public List<StaticTree> createInRange(int minX, int maxX) {
         List<StaticTree> retList = new LinkedList<StaticTree>();
-        Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));
+        Random rnd = new Random();
         boolean flag = false;
         int[] arr = new int[TREEAMOUNT];
         // maybe coin flip?

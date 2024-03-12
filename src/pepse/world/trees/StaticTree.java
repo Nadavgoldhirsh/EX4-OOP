@@ -22,7 +22,6 @@ public class StaticTree extends GameObject implements Observer {
      */
     private static final int INT_BOUND = 2;
     private static final int DIVIDE_AMOUNT = 2;
-    private static final int RAND_VALUES = 60;
     private  StaticLeaf staticLeaf;
     private  Fruit fruit;
     private static final int LEAF = 20;
@@ -37,7 +36,7 @@ public class StaticTree extends GameObject implements Observer {
     private final List<Observer> treeObservers= new LinkedList<>();
 
 
-    private Random rnd = new Random(Objects.hash(RAND_VALUES, PepseGameManager.SEED));
+    private Random rnd = new Random();
 
 
     /**
@@ -57,10 +56,6 @@ public class StaticTree extends GameObject implements Observer {
             for (int j = 0; j<leafamount; j++){
                 if(rnd.nextDouble()>COIN){
                     createLeaf(pos, j, i);
-                }
-                else {
-                    // didn't create a leaf so no fruit either
-                    continue;
                 }
                 if(rnd.nextDouble()>COINF){
                     createFruit(pos, j, i);

@@ -17,7 +17,7 @@ public class Terrain {
     private static final int BLOCK_SIZE_MULT = 7;
     private static final String GROUND = "ground";
     private static int groundHeightAtX0 = 0;
-    private static  int seed = 0;
+    private static  int seed;
     private static final Color BASE_GROUND_COLOR =new Color(212, 123,74);
     private static final int TERRAIN_DEPTH = 20;
 
